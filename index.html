@@ -105,7 +105,7 @@ input:focus,textarea:focus{border-color:var(--main);box-shadow:0 0 0 3px rgba(18
 </style>
 </head>
 <body>
-
+ 
 <div class="nav">
   <div class="logo">诗巷</div>
   <div class="nav-tabs">
@@ -117,12 +117,12 @@ input:focus,textarea:focus{border-color:var(--main);box-shadow:0 0 0 3px rgba(18
     <button class="btn btn-outline" style="width:auto;padding:10px 20px" onclick="toggleDark()">暗黑模式</button>
   </div>
 </div>
-
+ 
 <div class="container">
   <div id="homePage" class="page active">
     <div class="banner">
       <h1>一人一诗一世界</h1>
-      <p>诗词创作 · 分享 · 交流</p >
+      <p>诗词创作 · 分享 · 交流</p>
     </div>
     <div class="user-card" id="userCard" style="display:none">
       <div class="avatar" id="avatar">詩</div>
@@ -143,13 +143,13 @@ input:focus,textarea:focus{border-color:var(--main);box-shadow:0 0 0 3px rgba(18
     <h3 style="margin:30px 0 15px;font-size:22px;letter-spacing:1px">我的作品</h3>
     <div id="poemList"></div>
   </div>
-
+ 
   <div id="feedPage" class="page">
     <h2 style="margin:25px 0;font-size:28px;letter-spacing:2px">诗词朋友圈</h2>
     <div id="feedList"></div>
   </div>
 </div>
-
+ 
 <div class="modal" id="loginModal">
   <div class="modal-box">
     <div class="tab-switch">
@@ -170,15 +170,15 @@ input:focus,textarea:focus{border-color:var(--main);box-shadow:0 0 0 3px rgba(18
     <button style="margin-top:20px;color:var(--gray);cursor:pointer" onclick="hideLogin()">关闭</button>
   </div>
 </div>
-
+ 
 <script>
 let nowUser = localStorage.getItem('nowUser')
 let currentPage = 'home'
-
+ 
 if (!localStorage.getItem('users')) localStorage.setItem('users', '{}')
 if (!localStorage.getItem('feedData')) localStorage.setItem('feedData', '[]')
 if (!localStorage.getItem('follow')) localStorage.setItem('follow', '[]')
-
+ 
 // 检查登录状态再切换页面
 function checkLoginAndSwitch(page) {
   if (!nowUser) {
@@ -188,7 +188,7 @@ function checkLoginAndSwitch(page) {
     switchPage(page)
   }
 }
-
+ 
 function switchPage(page) {
   currentPage = page
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
@@ -197,7 +197,7 @@ function switchPage(page) {
   document.querySelector(`.nav-tab:nth-child(${page === 'home' ? 1 : 2})`).classList.add('active')
   if (page === 'feed') loadFeed()
 }
-
+ 
 function showTab(t){
   document.getElementById('loginBox').style.display = t=='login'?'block':'none'
   document.getElementById('regBox').style.display = t=='reg'?'block':'none'
@@ -206,7 +206,7 @@ function showTab(t){
 }
 function showLogin(){document.getElementById('loginModal').style.display='flex'}
 function hideLogin(){document.getElementById('loginModal').style.display='none'}
-
+ 
 function reg(){
   let u = document.getElementById('userReg').value
   let p = document.getElementById('pwdReg').value
@@ -218,7 +218,7 @@ function reg(){
   localStorage.setItem('users', JSON.stringify(users))
   alert('注册成功！请登录')
 }
-
+ 
 function login(){
   let u = document.getElementById('userLogin').value
   let p = document.getElementById('pwdLogin').value
@@ -229,13 +229,13 @@ function login(){
   hideLogin()
   loadUser()
 }
-
+ 
 function logout(){
   localStorage.removeItem('nowUser')
   nowUser = null
   loadUser()
 }
-
+ 
 function editPenName() {
   if (!nowUser) return;
   let newPenName = prompt('请输入新的笔名：');
@@ -247,7 +247,7 @@ function editPenName() {
   document.getElementById('author').value = newPenName;
   alert('笔名修改成功');
 }
-
+ 
 function publish(){
   if(!nowUser)return showLogin()
   let t = document.getElementById('title').value
@@ -261,31 +261,31 @@ function publish(){
   document.getElementById('content').value=''
   loadPoems()
 }
-
+ 
 function publishToFeed() {
   if(!nowUser)return showLogin()
   let t = document.getElementById('title').value
   let a = document.getElementById('author').value
   let c = document.getElementById('content').value
   if(!t||!c)return alert('请填写完整')
-  
+   
   let feedData = JSON.parse(localStorage.getItem('feedData'))
   feedData.unshift({
     id: Date.now(), author: nowUser, penName:a, title:t, content:c,
     likes:0, dislikes:0, comments:[], time:new Date().toLocaleString()
   })
   localStorage.setItem('feedData', JSON.stringify(feedData))
-  
+   
   let users = JSON.parse(localStorage.getItem('users'))
   users[nowUser].poems.unshift({t,a,c})
   localStorage.setItem('users', JSON.stringify(users))
-  
+   
   document.getElementById('title').value=''
   document.getElementById('content').value=''
   loadPoems()
   alert('已分享到诗词朋友圈！')
 }
-
+ 
 function loadUser(){
   let uc = document.getElementById('userCard')
   let pb = document.getElementById('publishBox')
@@ -298,7 +298,7 @@ function loadUser(){
   document.getElementById('avatar').innerText = dn.charAt(0)
   loadPoems()
 }
-
+ 
 function loadPoems(){
   if(!nowUser)return
   let users = JSON.parse(localStorage.getItem('users'))
@@ -311,16 +311,15 @@ function loadPoems(){
   </div>`).join('')
   document.getElementById('poemList').innerHTML = html
 }
-
+ 
 function del(i){
   if(!nowUser)return
   let users = JSON.parse(localStorage.getItem('users'))
   users[nowUser].poems.splice(i,1)
- 
- localStorage.setItem('users', JSON.stringify(users))
+  localStorage.setItem('users', JSON.stringify(users))
   loadPoems()
 }
-
+ 
 function loadFeed() {
   let fd = JSON.parse(localStorage.getItem('feedData'))
   let users = JSON.parse(localStorage.getItem('users'))
@@ -354,7 +353,7 @@ function loadFeed() {
   }).join('')
   document.getElementById('feedList').innerHTML = html
 }
-
+ 
 function like(id) {
   if(!nowUser)return showLogin()
   let fd = JSON.parse(localStorage.getItem('feedData'))
@@ -363,7 +362,7 @@ function like(id) {
   localStorage.setItem('feedData', JSON.stringify(fd))
   loadFeed()
 }
-
+ 
 function dislike(id) {
   if(!nowUser)return showLogin()
   let fd = JSON.parse(localStorage.getItem('feedData'))
@@ -372,12 +371,12 @@ function dislike(id) {
   localStorage.setItem('feedData', JSON.stringify(fd))
   loadFeed()
 }
-
+ 
 function toggleComment(id) {
   let el = document.getElementById(`c-${id}`)
   el.style.display = el.style.display==='none'?'block':'none'
 }
-
+ 
 function addComment(id) {
   if(!nowUser)return showLogin()
   let inp = document.getElementById(`ci-${id}`)
@@ -387,15 +386,13 @@ function addComment(id) {
   let name = users[nowUser].penName
   let fd = JSON.parse(localStorage.getItem('feedData'))
   let p = fd.find(x=>x.id===id)
-  p.comments.push({author:nam
-
-e, content:val, time:new Date().toLocaleString()})
+  p.comments.push({author:name, content:val, time:new Date().toLocaleString()})
   localStorage.setItem('feedData', JSON.stringify(fd))
   inp.value = ''
   loadFeed()
   document.getElementById(`c-${id}`).style.display = 'block'
 }
-
+ 
 function toggleFollow(uid) {
   if(!nowUser)return showLogin()
   let follow = JSON.parse(localStorage.getItem('follow'))
@@ -409,12 +406,14 @@ function toggleFollow(uid) {
   localStorage.setItem('follow', JSON.stringify(follow))
   loadFeed()
 }
-
+ 
 function toggleDark(){document.body.classList.toggle('dark')}
-
+ 
 window.onload = function(){
   loadUser()
 }
 </script>
 </body>
 </html>
+保存到：
+我的网盘
