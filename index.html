@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>诗巷 - 诗词创作分享平台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family: "Microsoft YaHei",sans-serif}
+:root{--main:#b72424;--bg:#fdfaf5;--card:#fff;--text:#222;--gray:#777;--line:#eee8e0}
+.dark{--main:#d88;--bg:#181818;--card:#222;--text:#eee;--gray:#999;--line:#333}
+body{background:var(--bg);color:var(--text);line-height:1.7;transition:all 0.2s}
+button,input,textarea{font-family:inherit;outline:none;border:none;background:transparent}
+
+.nav{position:fixed;top:0;width:100%;height:60px;background:var(--card);
+display:flex;align-items:center;justify-content:space-between;padding:0 15px;
+border-bottom:1px solid var(--line);z-index:99}
+.logo{font-size:20px;font-weight:bold;color:var(--main)}
+.container{max-width:800px;margin:70px auto 40px;padding:0 15px}
+
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000;display:none}
+.modal-box{background:var(--card);width:90%;max-width:380px;padding:25px;border-radius:14px}
+input,textarea{width:100%;padding:10px;border:1px solid var(--line);
+border-radius:8px;margin-bottom:10px;background:var(--bg);color:var(--text)}
+.btn{background:var(--main);color:#fff;padding:10px;border-radius:8px;width:100%;cursor:pointer}
+
+.banner{background:var(--main);color:#fff;padding:30px 20px;text-align:center;border-radius:12px;margin:20px 0}
+.user-card{background:var(--card);padding:25px;border-radius:12px;margin-bottom:20px}
+.avatar{width:70px;height:70px;background:var(--main);color:#fff;border-radius:50%;
+display:flex;align-items:center;justify-content:center;font-size:24px}
+.publish{background:var(--card);padding:20px;border-radius:12px;margin-bottom:20px}
+.poem-item{background:var(--card);padding:20px;border-radius:12px;margin-bottom:12px}
+.poem-title{color:var(--main);font-weight:bold;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="logo">诗巷</div>
+  <div>
+    <button onclick="showLogin()">登录</button>
+    <button onclick="toggleDark()">暗黑模式</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="banner">
+    <h1>一人一诗一世界</h1>
+    <p>诗词个人主页 · 多用户永久版</p >
+  </div>
+
+  <div class="user-card" id="userCard" style="display:none">
+    <div class="avatar" id="avatar">詩</div>
+    <div id="username" style="margin-top:10px;font-weight:bold">用户名</div>
+    <div style="color:gray;margin-top:5px">我的诗词主页</div>
+    <button class="btn" style="margin-top:10px" onclick="logout()">退出登录</button>
+  </div>
+
+  <div class="publish" id="publishBox" style="display:none">
+    <input id="title" placeholder="诗名"><br>
+    <input id="author" placeholder="作者"><br>
+    <textarea id="content" rows="5" placeholder="写下你的诗词..."></textarea><br>
+    <button class="btn" onclick="publish()">发布诗词</button>
+  </div>
+
+  <h3 style="margin:20px 0 10px">我的作品</h3>
+  <div id="poemList"></div>
+</div>
+
+<div class="modal" id="loginModal">
+  <div class="modal-box">
+    <div style="text-align:center;margin-bottom:15px">
+      <span onclick="showTab('login')" id="tabLogin" class="active">登录</span>｜
+      <span onclick="showTab('reg')" id="tabReg">注册</span>
+    </div>
+    <div id="loginBox">
+      <input id="userLogin" placeholder="用户名">
+      <input type="password" id="pwdLogin" placeholder="密码">
+      <button class="btn" onclick="login()">登录</button>
+    </div>
+    <div id="regBox" style="display:none">
+      <input id="userReg" placeholder="用户名">
+      <input type="password" id="pwdReg" placeholder="密码">
+      <button class="btn" onclick="reg()">注册</button>
+    </div>
+    <button style="margin-top:10px;color:gray" onclick="hideLogin()">关闭</button>
+  </div>
+</div>
+
+<script>
+let nowUser = localStorage.getItem('nowUser')
+
+function showTab(t){
+  document.getElementById('loginBox').style.display = t=='login'?'block':'none'
+  document.getElementById('regBox').style.display = t=='reg'?'block':'none'
+}
+function showLogin(){document.getElementById('loginModal').style.display='flex'}
+function hideLogin(){document.getElementById('loginModal').style.display='none'}
+
+function reg(){
+  let u = document.getElementById('userReg').value
+  let p = document.getElementById('pwdReg').value
+  if(!u||!p)return alert('请填写完整')
+  let users = JSON.parse(localStorage.getItem('users')||'{}')
+  if(users[u])return alert('用户名已存在')
+  users[u] = {pwd:p, poems:[]}
+  localStorage.setItem('users', JSON.stringify(users))
+  alert('注册成功！请登录')
+}
+
+function login(){
+  let u = document.getElementById('userLogin').value
+  let p = document.getElementById('pwdLogin').value
+  let users = JSON.parse(localStorage.getItem('users')||'{}')
+  if(!users[u] || users[u].pwd!==p)return alert('账号或密码错误')
+  localStorage.setItem('nowUser', u)
+  nowUser = u
+  hideLogin()
+  loadUser()
+}
+
+function logout(){
+  localStorage.removeItem('nowUser')
+  nowUser = null
+  loadUser()
+}
+
+function publish(){
+  if(!nowUser)return showLogin()
+  let t = document.getElementById('title').value
+  let a = document.getElementById('author').value
+  let c = document.getElementById('content').value
+  if(!t||!c)return alert('请填写完整')
+  let users = JSON.parse(localStorage.getItem('users'))
+  users[nowUser].poems.unshift({t,a,c})
+  localStorage.setItem('users', JSON.stringify(users))
+  document.getElementById('title').value=''
+  document.getElementById('content').value=''
+  loadPoems()
+}
+
+function loadUser(){
+  let uc = document.getElementById('userCard')
+  let pb = document.getElementById('publishBox')
+  if(!nowUser){
+    uc.style.display='none'
+    pb.style.display='none'
+    return
+  }
+  uc.style.display='block'
+  pb.style.display='block'
+  document.getElementById('username').innerText = nowUser
+  document.getElementById('avatar').innerText = nowUser.charAt(0)
+  loadPoems()
+}
+
+function loadPoems(){
+  if(!nowUser)return
+  let users = JSON.parse(localStorage.getItem('users'))
+  let list = users[nowUser].poems
+  let html = ''
+  list.forEach((item,i)=>{
+    html+=`
+    <div class="poem-item">
+      <div class="poem-title">${item.t}</div>
+      <div style="color:gray;margin-bottom:8px">${item.a}</div>
+      <div style="white-space:pre-line">${item.c}</div>
+      <button style="color:red;margin-top:10px" onclick="del(${i})">删除</button>
+    </div>`
+  })
+  document.getElementById('poemList').innerHTML = html
+}
+
+function del(i){
+  if(!nowUser)return
+  let users = JSON.parse(localStorage.getItem('users'))
+  users[nowUser].poems.splice(i,1)
+  localStorage.setItem('users', JSON.stringify(users))
+  loadPoems()
+}
+
+function toggleDark(){document.body.classList.toggle('dark')}
+
+window.onload = function(){
+  loadUser()
+}
+</script>
+</body>
+</html>
