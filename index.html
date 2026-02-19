@@ -53,12 +53,13 @@ display:flex;align-items:center;justify-content:center;font-size:24px}
     <div class="avatar" id="avatar">詩</div>
     <div id="username" style="margin-top:10px;font-weight:bold">用户名</div>
     <div style="color:gray;margin-top:5px">我的诗词主页</div>
+    <button class="btn" style="margin-top:10px" onclick="editPenName()">修改笔名</button>
     <button class="btn" style="margin-top:10px" onclick="logout()">退出登录</button>
   </div>
 
   <div class="publish" id="publishBox" style="display:none">
     <input id="title" placeholder="诗名"><br>
-    <input id="author" placeholder="作者"><br>
+    <input id="author" placeholder="作者" readonly><br>
     <textarea id="content" rows="5" placeholder="写下你的诗词..."></textarea><br>
     <button class="btn" onclick="publish()">发布诗词</button>
   </div>
@@ -81,6 +82,7 @@ display:flex;align-items:center;justify-content:center;font-size:24px}
     <div id="regBox" style="display:none">
       <input id="userReg" placeholder="用户名">
       <input type="password" id="pwdReg" placeholder="密码">
+      <input id="penNameReg" placeholder="笔名">
       <button class="btn" onclick="reg()">注册</button>
     </div>
     <button style="margin-top:10px;color:gray" onclick="hideLogin()">关闭</button>
@@ -100,10 +102,11 @@ function hideLogin(){document.getElementById('loginModal').style.display='none'}
 function reg(){
   let u = document.getElementById('userReg').value
   let p = document.getElementById('pwdReg').value
-  if(!u||!p)return alert('请填写完整')
+  let penName = document.getElementById('penNameReg').value
+  if(!u||!p||!penName)return alert('请填写完整')
   let users = JSON.parse(localStorage.getItem('users')||'{}')
   if(users[u])return alert('用户名已存在')
-  users[u] = {pwd:p, poems:[]}
+  users[u] = {pwd:p, penName: penName, poems:[]}
   localStorage.setItem('users', JSON.stringify(users))
   alert('注册成功！请登录')
 }
@@ -123,6 +126,18 @@ function logout(){
   localStorage.removeItem('nowUser')
   nowUser = null
   loadUser()
+}
+
+function editPenName() {
+  if (!nowUser) return;
+  let newPenName = prompt('请输入新的笔名：');
+  if (!newPenName) return;
+  let users = JSON.parse(localStorage.getItem('users') || '{}');
+  users[nowUser].penName = newPenName;
+  localStorage.setItem('users', JSON.stringify(users));
+  document.getElementById('username').innerText = newPenName;
+  document.getElementById('author').value = newPenName;
+  alert('笔名修改成功');
 }
 
 function publish(){
@@ -149,8 +164,12 @@ function loadUser(){
   }
   uc.style.display='block'
   pb.style.display='block'
-  document.getElementById('username').innerText = nowUser
-  document.getElementById('avatar').innerText = nowUser.charAt(0)
+  let users = JSON.parse(localStorage.getItem('users') || '{}');
+  let userData = users[nowUser];
+  let displayName = userData.penName || nowUser;
+  document.getElementById('username').innerText = displayName
+  document.getElementById('author').value = displayName;
+  document.getElementById('avatar').innerText = displayName.charAt(0)
   loadPoems()
 }
 
