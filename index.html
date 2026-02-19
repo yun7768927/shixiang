@@ -3,75 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>诗巷 - 诗词创作分享平台</title>
+<title>诗巷 - 诗词创作社交平台</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family: "Microsoft YaHei",sans-serif}
-:root{--main:#b72424;--bg:#fdfaf5;--card:#fff;--text:#222;--gray:#777;--line:#eee8e0}
-.dark{--main:#d88;--bg:#181818;--card:#222;--text:#eee;--gray:#999;--line:#333}
-body{background:var(--bg);color:var(--text);line-height:1.7;transition:all 0.2s}
-button,input,textarea{font-family:inherit;outline:none;border:none;background:transparent}
-
-.nav{position:fixed;top:0;width:100%;height:60px;background:var(--card);
-display:flex;align-items:center;justify-content:space-between;padding:0 15px;
-border-bottom:1px solid var(--line);z-index:99}
-.logo{font-size:20px;font-weight:bold;color:var(--main)}
-.container{max-width:800px;margin:70px auto 40px;padding:0 15px}
-
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000;display:none}
-.modal-box{background:var(--card);width:90%;max-width:380px;padding:25px;border-radius:14px}
-input,textarea{width:100%;padding:10px;border:1px solid var(--line);
-border-radius:8px;margin-bottom:10px;background:var(--bg);color:var(--text)}
-.btn{background:var(--main);color:#fff;padding:10px;border-radius:8px;width:100%;cursor:pointer}
-
-.banner{background:var(--main);color:#fff;padding:30px 20px;text-align:center;border-radius:12px;margin:20px 0}
-.user-card{background:var(--card);padding:25px;border-radius:12px;margin-bottom:20px}
-.avatar{width:70px;height:70px;background:var(--main);color:#fff;border-radius:50%;
-display:flex;align-items:center;justify-content:center;font-size:24px}
-.publish{background:var(--card);padding:20px;border-radius:12px;margin-bottom:20px}
-.poem-item{background:var(--card);padding:20px;border-radius:12px;margin-bottom:12px}
-.poem-title{color:var(--main);font-weight:bold;margin-bottom:8px}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family: "Noto Serif SC", "Microsoft YaHei", serif}
+:root{
+  --main:#b72424;--bg:#fdfaf5;--card:#fff;--text:#222;--gray:#777;--line:#eee8e0;
+  --shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+.dark{
+  --main:#d88;--bg:#181818;--card:#222;--text:#eee;--gray:#999;--line:#333;
+  --shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+body{
+  background:var(--bg);color:var(--text);line-height:1.8;transition:all 0.3s ease;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 34c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23b72424' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+button,input,textarea{font-family:inherit;outline:none;border:none;background:transparent;transition:all 0.2s ease;}
+.nav{
+  position:fixed;top:0;width:100%;height:70px;background:var(--card);
+  display:flex;align-items:center;justify-content:space-between;padding:0 20px;
+  border-bottom:1px solid var(--line);z-index:99;box-shadow:var(--shadow);
+}
+.logo{font-size:24px;font-weight:bold;color:var(--main);letter-spacing:2px;}
+.nav-tabs{display:flex;gap:20px;}
+.nav-tab{cursor:pointer;padding:8px 16px;border-radius:8px;transition:all 0.2s;}
+.nav-tab.active{background:var(--main);color:#fff;}
+.container{max-width:850px;margin:90px auto 60px;padding:0 20px;}
+.page{display:none;}
+.page.active{display:block;}
+.modal{
+  position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);
+  display:flex;align-items:center;justify-content:center;z-index:1000;display:none;backdrop-filter:blur(4px);
+}
+.modal-box{
+  background:var(--card);width:90%;max-width:420px;padding:35px;border-radius:16px;
+  box-shadow:var(--shadow);border:1px solid var(--line);
+}
+input,textarea{
+  width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:10px;
+  margin-bottom:15px;background:var(--bg);color:var(--text);font-size:15px;
+}
+input:focus,textarea:focus{border-color:var(--main);box-shadow:0 0 0 3px rgba(183,36,36,0.1);}
+.btn{
+  background:linear-gradient(135deg, var(--main), #d94444);color:#fff;padding:14px;
+  border-radius:10px;width:100%;cursor:pointer;font-size:16px;font-weight:500;
+  box-shadow:0 4px 12px rgba(183,36,36,0.2);
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(183,36,36,0.3);}
+.btn:active{transform:translateY(0);}
+.btn-outline{background:transparent;color:var(--main);border:1px solid var(--main);box-shadow:none;}
+.btn-outline:hover{background:var(--main);color:#fff;}
+.banner{
+  background:linear-gradient(135deg, var(--main), #d94444);color:#fff;padding:45px 30px;
+  text-align:center;border-radius:20px;margin:25px 0;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.banner::before{
+  content:'';position:absolute;top:-50%;right:-20%;width:200px;height:200px;
+  background:rgba(255,255,255,0.1);border-radius:50%;
+}
+.banner h1{font-size:32px;margin-bottom:10px;letter-spacing:3px;}
+.banner p{font-size:16px;opacity:0.9;}
+.user-card{
+  background:var(--card);padding:35px;border-radius:20px;margin-bottom:25px;
+  box-shadow:var(--shadow);border:1px solid var(--line);text-align:center;
+}
+.avatar{
+  width:90px;height:90px;background:linear-gradient(135deg, var(--main), #d94444);
+  color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin:0 auto 20px;box-shadow:0 4px 12px rgba(183,36,36,0.2);
+}
+.publish{
+  background:var(--card);padding:30px;border-radius:20px;margin-bottom:25px;
+  box-shadow:var(--shadow);border:1px solid var(--line);
+}
+.poem-item{
+  background:var(--card);padding:30px;border-radius:20px;margin-bottom:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);transition:all 0.3s ease;
+}
+.poem-item:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.08);}
+.poem-title{color:var(--main);font-weight:bold;margin-bottom:12px;font-size:20px;letter-spacing:1px;}
+.poem-author{color:var(--gray);margin-bottom:15px;font-style:italic;}
+.poem-content{white-space:pre-line;line-height:2;font-size:16px;}
+.poem-actions{
+  display:flex;gap:20px;margin-top:20px;padding-top:20px;border-top:1px solid var(--line);
+}
+.action-btn{
+  display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--gray);transition:all 0.2s;
+}
+.action-btn:hover{color:var(--main);}
+.comment-section{margin-top:20px;padding-top:20px;border-top:1px solid var(--line);}
+.comment-item{padding:10px 0;border-bottom:1px solid var(--line);}
+.comment-author{font-weight:bold;color:var(--main);}
+.comment-content{margin-top:5px;}
+.comment-input{margin-top:15px;display:flex;gap:10px;}
+.comment-input input{flex:1;margin-bottom:0;}
+.comment-input .btn{width:auto;padding:14px 20px;}
+.tab-switch{display:flex;justify-content:center;margin-bottom:25px;gap:20px;}
+.tab-switch span{cursor:pointer;padding:8px 16px;border-radius:8px;transition:all 0.2s;}
+.tab-switch span.active{background:var(--main);color:#fff;}
 </style>
 </head>
 <body>
 
 <div class="nav">
   <div class="logo">诗巷</div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="switchPage('home')">我的主页</div>
+    <div class="nav-tab" onclick="checkLoginAndSwitch('feed')">诗词朋友圈</div>
+  </div>
   <div>
-    <button onclick="showLogin()">登录</button>
-    <button onclick="toggleDark()">暗黑模式</button>
+    <button class="btn" style="width:auto;padding:10px 20px;margin-right:10px" onclick="showLogin()">登录 / 注册</button>
+    <button class="btn btn-outline" style="width:auto;padding:10px 20px" onclick="toggleDark()">暗黑模式</button>
   </div>
 </div>
 
 <div class="container">
-  <div class="banner">
-    <h1>一人一诗一世界</h1>
-    <p>诗词个人主页 · 多用户永久版</p >
+  <div id="homePage" class="page active">
+    <div class="banner">
+      <h1>一人一诗一世界</h1>
+      <p>诗词创作 · 分享 · 交流</p >
+    </div>
+    <div class="user-card" id="userCard" style="display:none">
+      <div class="avatar" id="avatar">詩</div>
+      <div id="username" style="margin-top:10px;font-weight:bold;font-size:20px">用户名</div>
+      <div style="color:var(--gray);margin-top:5px">我的诗词主页</div>
+      <button class="btn" style="margin-top:20px" onclick="editPenName()">修改笔名</button>
+      <button class="btn btn-outline" style="margin-top:12px" onclick="logout()">退出登录</button>
+    </div>
+    <div class="publish" id="publishBox" style="display:none">
+      <input id="title" placeholder="诗名">
+      <input id="author" placeholder="作者" readonly>
+      <textarea id="content" rows="6" placeholder="写下你的诗词..."></textarea>
+      <div style="display:flex;gap:10px;margin-top:15px">
+        <button class="btn" style="flex:1" onclick="publish()">仅保存</button>
+        <button class="btn btn-outline" style="flex:1" onclick="publishToFeed()">分享到朋友圈</button>
+      </div>
+    </div>
+    <h3 style="margin:30px 0 15px;font-size:22px;letter-spacing:1px">我的作品</h3>
+    <div id="poemList"></div>
   </div>
 
-  <div class="user-card" id="userCard" style="display:none">
-    <div class="avatar" id="avatar">詩</div>
-    <div id="username" style="margin-top:10px;font-weight:bold">用户名</div>
-    <div style="color:gray;margin-top:5px">我的诗词主页</div>
-    <button class="btn" style="margin-top:10px" onclick="editPenName()">修改笔名</button>
-    <button class="btn" style="margin-top:10px" onclick="logout()">退出登录</button>
+  <div id="feedPage" class="page">
+    <h2 style="margin:25px 0;font-size:28px;letter-spacing:2px">诗词朋友圈</h2>
+    <div id="feedList"></div>
   </div>
-
-  <div class="publish" id="publishBox" style="display:none">
-    <input id="title" placeholder="诗名"><br>
-    <input id="author" placeholder="作者" readonly><br>
-    <textarea id="content" rows="5" placeholder="写下你的诗词..."></textarea><br>
-    <button class="btn" onclick="publish()">发布诗词</button>
-  </div>
-
-  <h3 style="margin:20px 0 10px">我的作品</h3>
-  <div id="poemList"></div>
 </div>
 
 <div class="modal" id="loginModal">
   <div class="modal-box">
-    <div style="text-align:center;margin-bottom:15px">
-      <span onclick="showTab('login')" id="tabLogin" class="active">登录</span>｜
+    <div class="tab-switch">
+      <span onclick="showTab('login')" id="tabLogin" class="active">登录</span>
       <span onclick="showTab('reg')" id="tabReg">注册</span>
     </div>
     <div id="loginBox">
@@ -85,16 +167,42 @@ display:flex;align-items:center;justify-content:center;font-size:24px}
       <input id="penNameReg" placeholder="笔名">
       <button class="btn" onclick="reg()">注册</button>
     </div>
-    <button style="margin-top:10px;color:gray" onclick="hideLogin()">关闭</button>
+    <button style="margin-top:20px;color:var(--gray);cursor:pointer" onclick="hideLogin()">关闭</button>
   </div>
 </div>
 
 <script>
 let nowUser = localStorage.getItem('nowUser')
+let currentPage = 'home'
+
+if (!localStorage.getItem('users')) localStorage.setItem('users', '{}')
+if (!localStorage.getItem('feedData')) localStorage.setItem('feedData', '[]')
+if (!localStorage.getItem('follow')) localStorage.setItem('follow', '[]')
+
+// 检查登录状态再切换页面
+function checkLoginAndSwitch(page) {
+  if (!nowUser) {
+    alert('请先登录后再进入诗词朋友圈')
+    showLogin()
+  } else {
+    switchPage(page)
+  }
+}
+
+function switchPage(page) {
+  currentPage = page
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'))
+  document.getElementById(`${page}Page`).classList.add('active')
+  document.querySelector(`.nav-tab:nth-child(${page === 'home' ? 1 : 2})`).classList.add('active')
+  if (page === 'feed') loadFeed()
+}
 
 function showTab(t){
   document.getElementById('loginBox').style.display = t=='login'?'block':'none'
   document.getElementById('regBox').style.display = t=='reg'?'block':'none'
+  document.getElementById('tabLogin').classList.toggle('active', t=='login')
+  document.getElementById('tabReg').classList.toggle('active', t=='reg')
 }
 function showLogin(){document.getElementById('loginModal').style.display='flex'}
 function hideLogin(){document.getElementById('loginModal').style.display='none'}
@@ -104,7 +212,7 @@ function reg(){
   let p = document.getElementById('pwdReg').value
   let penName = document.getElementById('penNameReg').value
   if(!u||!p||!penName)return alert('请填写完整')
-  let users = JSON.parse(localStorage.getItem('users')||'{}')
+  let users = JSON.parse(localStorage.getItem('users'))
   if(users[u])return alert('用户名已存在')
   users[u] = {pwd:p, penName: penName, poems:[]}
   localStorage.setItem('users', JSON.stringify(users))
@@ -114,7 +222,7 @@ function reg(){
 function login(){
   let u = document.getElementById('userLogin').value
   let p = document.getElementById('pwdLogin').value
-  let users = JSON.parse(localStorage.getItem('users')||'{}')
+  let users = JSON.parse(localStorage.getItem('users'))
   if(!users[u] || users[u].pwd!==p)return alert('账号或密码错误')
   localStorage.setItem('nowUser', u)
   nowUser = u
@@ -132,7 +240,7 @@ function editPenName() {
   if (!nowUser) return;
   let newPenName = prompt('请输入新的笔名：');
   if (!newPenName) return;
-  let users = JSON.parse(localStorage.getItem('users') || '{}');
+  let users = JSON.parse(localStorage.getItem('users'));
   users[nowUser].penName = newPenName;
   localStorage.setItem('users', JSON.stringify(users));
   document.getElementById('username').innerText = newPenName;
@@ -154,39 +262,53 @@ function publish(){
   loadPoems()
 }
 
+function publishToFeed() {
+  if(!nowUser)return showLogin()
+  let t = document.getElementById('title').value
+  let a = document.getElementById('author').value
+  let c = document.getElementById('content').value
+  if(!t||!c)return alert('请填写完整')
+  
+  let feedData = JSON.parse(localStorage.getItem('feedData'))
+  feedData.unshift({
+    id: Date.now(), author: nowUser, penName:a, title:t, content:c,
+    likes:0, dislikes:0, comments:[], time:new Date().toLocaleString()
+  })
+  localStorage.setItem('feedData', JSON.stringify(feedData))
+  
+  let users = JSON.parse(localStorage.getItem('users'))
+  users[nowUser].poems.unshift({t,a,c})
+  localStorage.setItem('users', JSON.stringify(users))
+  
+  document.getElementById('title').value=''
+  document.getElementById('content').value=''
+  loadPoems()
+  alert('已分享到诗词朋友圈！')
+}
+
 function loadUser(){
   let uc = document.getElementById('userCard')
   let pb = document.getElementById('publishBox')
-  if(!nowUser){
-    uc.style.display='none'
-    pb.style.display='none'
-    return
-  }
-  uc.style.display='block'
-  pb.style.display='block'
-  let users = JSON.parse(localStorage.getItem('users') || '{}');
-  let userData = users[nowUser];
-  let displayName = userData.penName || nowUser;
-  document.getElementById('username').innerText = displayName
-  document.getElementById('author').value = displayName;
-  document.getElementById('avatar').innerText = displayName.charAt(0)
+  if(!nowUser){ uc.style.display='none'; pb.style.display='none'; return }
+  uc.style.display='block'; pb.style.display='block'
+  let users = JSON.parse(localStorage.getItem('users'))
+  let dn = users[nowUser].penName
+  document.getElementById('username').innerText = dn
+  document.getElementById('author').value = dn
+  document.getElementById('avatar').innerText = dn.charAt(0)
   loadPoems()
 }
 
 function loadPoems(){
   if(!nowUser)return
   let users = JSON.parse(localStorage.getItem('users'))
-  let list = users[nowUser].poems
-  let html = ''
-  list.forEach((item,i)=>{
-    html+=`
-    <div class="poem-item">
-      <div class="poem-title">${item.t}</div>
-      <div style="color:gray;margin-bottom:8px">${item.a}</div>
-      <div style="white-space:pre-line">${item.c}</div>
-      <button style="color:red;margin-top:10px" onclick="del(${i})">删除</button>
-    </div>`
-  })
+  let html = users[nowUser].poems.map((item,i)=>`
+  <div class="poem-item">
+    <div class="poem-title">${item.t}</div>
+    <div class="poem-author">${item.a}</div>
+    <div class="poem-content">${item.c}</div>
+    <div style="margin-top:15px;color:var(--main);cursor:pointer" onclick="del(${i})">删除</div>
+  </div>`).join('')
   document.getElementById('poemList').innerHTML = html
 }
 
@@ -194,8 +316,98 @@ function del(i){
   if(!nowUser)return
   let users = JSON.parse(localStorage.getItem('users'))
   users[nowUser].poems.splice(i,1)
-  localStorage.setItem('users', JSON.stringify(users))
+ 
+ localStorage.setItem('users', JSON.stringify(users))
   loadPoems()
+}
+
+function loadFeed() {
+  let fd = JSON.parse(localStorage.getItem('feedData'))
+  let users = JSON.parse(localStorage.getItem('users'))
+  let html = fd.map(p=>{
+    let pen = users[p.author]?.penName || p.penName
+    return `
+    <div class="poem-item">
+      <div class="poem-title">${p.title}</div>
+      <div class="poem-author">${pen} · ${p.time}</div>
+      <div class="poem-content">${p.content}</div>
+      <div class="poem-actions">
+        <div class="action-btn" onclick="like(${p.id})">👍 ${p.likes}</div>
+        <div class="action-btn" onclick="dislike(${p.id})">👎 ${p.dislikes}</div>
+        <div class="action-btn" onclick="toggleComment(${p.id})">💬 ${p.comments.length}</div>
+        <div class="action-btn" onclick="toggleFollow('${p.author}')">
+          ${JSON.parse(localStorage.getItem('follow')).includes(p.author) ? '✅ 已关注' : '+ 关注'}
+        </div>
+      </div>
+      <div class="comment-section" id="c-${p.id}" style="display:none">
+        ${p.comments.map(c=>`
+        <div class="comment-item">
+          <div class="comment-author">${c.author}</div>
+          <div class="comment-content">${c.content}</div>
+        </div>`).join('')}
+        <div class="comment-input">
+          <input id="ci-${p.id}" placeholder="写下你的评论...">
+          <button class="btn" onclick="addComment(${p.id})">评论</button>
+        </div>
+      </div>
+    </div>`
+  }).join('')
+  document.getElementById('feedList').innerHTML = html
+}
+
+function like(id) {
+  if(!nowUser)return showLogin()
+  let fd = JSON.parse(localStorage.getItem('feedData'))
+  let p = fd.find(x=>x.id===id)
+  p.likes++
+  localStorage.setItem('feedData', JSON.stringify(fd))
+  loadFeed()
+}
+
+function dislike(id) {
+  if(!nowUser)return showLogin()
+  let fd = JSON.parse(localStorage.getItem('feedData'))
+  let p = fd.find(x=>x.id===id)
+  p.dislikes++
+  localStorage.setItem('feedData', JSON.stringify(fd))
+  loadFeed()
+}
+
+function toggleComment(id) {
+  let el = document.getElementById(`c-${id}`)
+  el.style.display = el.style.display==='none'?'block':'none'
+}
+
+function addComment(id) {
+  if(!nowUser)return showLogin()
+  let inp = document.getElementById(`ci-${id}`)
+  let val = inp.value.trim()
+  if(!val)return alert('请输入评论')
+  let users = JSON.parse(localStorage.getItem('users'))
+  let name = users[nowUser].penName
+  let fd = JSON.parse(localStorage.getItem('feedData'))
+  let p = fd.find(x=>x.id===id)
+  p.comments.push({author:nam
+
+e, content:val, time:new Date().toLocaleString()})
+  localStorage.setItem('feedData', JSON.stringify(fd))
+  inp.value = ''
+  loadFeed()
+  document.getElementById(`c-${id}`).style.display = 'block'
+}
+
+function toggleFollow(uid) {
+  if(!nowUser)return showLogin()
+  let follow = JSON.parse(localStorage.getItem('follow'))
+  if(follow.includes(uid)) {
+    follow = follow.filter(x=>x!==uid)
+    alert('已取消关注')
+  } else {
+    follow.push(uid)
+    alert('关注成功')
+  }
+  localStorage.setItem('follow', JSON.stringify(follow))
+  loadFeed()
 }
 
 function toggleDark(){document.body.classList.toggle('dark')}
